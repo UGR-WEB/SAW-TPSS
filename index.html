@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X-Ray Görüntü Analizi Testi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('images/ekran.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            justify-content: center;
+        }
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80%;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+        .image-container {
+            position: relative;
+right: 80px;
+            width: 200%;
+            max-height: 400px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .image-container img {
+            max-width: 300%;
+            max-height: 130%;
+            object-fit: contain;
+        }
+        .marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        #question-text {
+            text-align: center;
+            margin-top: 200px;
+        }
+        .options {
+            margin-top: 20px;
+        }
+        .options button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #ffffff;
+            border: 2px solid #ff8c00;
+            border-radius: 5px;
+        }
+#submit-btn {
+    position: fixed; /* Sabit pozisyon */
+    left: 20px;     /* Sola yasla */
+    bottom: 20px;   /* Alta yasla */
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    z-index: 1000;  /* Diğer elementlerin üstünde görünsün */
+}
+        .options button.selected {
+            background-color: #cc5500;
+            color: #fff;
+        }
+        .controls {
+            margin-top: 20px;
+display: flex;
+    gap: 10px;
+        }
+        .controls button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            border-radius: 5px;
+        }
+        #timer {
+            position: absolute;
+            top: 80px;
+            right: 260px;
+            font-size: 120px;
+            font-weight: bold;
+            background-color: rgba(255, 0, 0, 0.7);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div id="timer">Süre: 25</div>
+ <button id="submit-btn" onclick="submitTest()">Testi Bitir</button>
+    <div class="container">
+        <h1>X-Ray Görüntü Analizi</h1>
+        <div class="content-wrapper">
+            <div class="image-container" onclick="placeMarker(event)">
+                <img id="xray-image" src="images/resim-1.jpg" alt="X-Ray Görüntüsü">
+            </div>
+            <h2 id="question-text">Soru 1: Görüntüde tehdit unsuru var mı?</h2>
+            <div class="options" id="options-container">
+                <button onclick="selectOption(this, 'kirli')">Bagaj Kirli</button>
+                <button onclick="selectOption(this, 'temiz')">Bagaj Temiz</button>
+                <button onclick="selectOption(this, 'tanimsiz')">Tanımsız Alan</button>
+            </div>
+        </div>
+        <div class="controls">
+            <button onclick="prevQuestion()">Önceki</button>
+            <button onclick="nextQuestion()">Sonraki</button>
+            
+        </div>
+    </div>
+    <script>
+        let currentQuestion = 1;
+        const totalQuestions = 20;
+        let timeLeft = 25;
+        let timerInterval;
+        const correctAnswers = {
+            1: 'kirli',
+            2: 'temiz',
+            3: 'tanimsiz'
+        };
+        const questionScores = {
+            1: 10,
+            2: 5,
+            3: 8
+        };
+        let totalScore = 0;
+        function startTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 25;
+            document.getElementById('timer').textContent = ` ${timeLeft}`;
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = ` ${timeLeft}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    disableOptions();
+                }
+            }, 1000);
+        }
+        function disableOptions() {
+            document.querySelectorAll('.options button').forEach(button => {
+                button.classList.add('disabled');
+            });
+        }
+        function enableOptions() {
+            document.querySelectorAll('.options button').forEach(button => {
+                button.classList.remove('disabled');
+            });
+        }
+        function selectOption(button, answer) {
+            if (timeLeft > 0) {
+                document.querySelectorAll('.options button').forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+                if (answer === correctAnswers[currentQuestion]) {
+                    totalScore += questionScores[currentQuestion];
+                }
+            }
+        }
+        function placeMarker(event) {
+            if (timeLeft > 0) {
+                const container = document.querySelector('.image-container');
+                container.querySelector('.marker')?.remove();
+                const rect = container.getBoundingClientRect();
+                const marker = document.createElement('div');
+                marker.className = 'marker';
+                marker.style.left = `${event.clientX - rect.left - 10}px`;
+                marker.style.top = `${event.clientY - rect.top - 10}px`;
+                container.appendChild(marker);
+            }
+        }
+        function updateQuestion() {
+            document.getElementById('question-text').textContent = `Soru ${currentQuestion}: Görüntüde tehdit unsuru var mı?`;
+            document.getElementById('xray-image').src = `images/resim-${currentQuestion}.jpg`;
+            document.querySelectorAll('.options button').forEach(button => button.classList.remove('selected'));
+            document.querySelector('.marker')?.remove();
+            enableOptions();
+            startTimer();
+        }
+        function nextQuestion() {
+            if (currentQuestion < totalQuestions) {
+                currentQuestion++;
+                updateQuestion();
+            }
+        }
+        function prevQuestion() {
+            if (currentQuestion > 1) {
+                currentQuestion--;
+                updateQuestion();
+            }
+        }
+        function submitTest() {
+            alert(`Test tamamlandı! Toplam puanınız: ${totalScore}`);
+        }
+        startTimer();
+    </script>
+</body>
+</html>
+
