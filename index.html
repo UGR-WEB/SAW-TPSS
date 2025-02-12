@@ -31,17 +31,16 @@
         }
         .image-container {
             position: relative;
-right: 80px;
-            width: 200%;
-            max-height: 400px;
+            width: 100%;
+            max-height: 500px;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
         }
         .image-container img {
-            max-width: 300%;
-            max-height: 130%;
+            max-width: 100%;
+            height: auto;
             object-fit: contain;
         }
         .marker {
@@ -54,10 +53,13 @@ right: 80px;
         }
         #question-text {
             text-align: center;
-            margin-top: 200px;
+            margin-top: 150px;
         }
         .options {
             margin-top: 20px;
+            display: flex;
+            flex-direction: column; /* Stack buttons vertically on small screens */
+            align-items: center;
         }
         .options button {
             padding: 10px 20px;
@@ -67,28 +69,29 @@ right: 80px;
             background-color: #ffffff;
             border: 2px solid #ff8c00;
             border-radius: 5px;
+            width: 80%; /* Make buttons more responsive */
         }
-#submit-btn {
-    position: fixed; /* Sabit pozisyon */
-    left: 20px;     /* Sola yasla */
-    bottom: 20px;   /* Alta yasla */
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    z-index: 1000;  /* Diğer elementlerin üstünde görünsün */
-}
+        #submit-btn {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            z-index: 1000;
+        }
         .options button.selected {
             background-color: #cc5500;
             color: #fff;
         }
         .controls {
             margin-top: 20px;
-display: flex;
-    gap: 10px;
+            display: flex;
+            gap: 10px;
         }
         .controls button {
             padding: 10px;
@@ -102,9 +105,9 @@ display: flex;
         }
         #timer {
             position: absolute;
-            top: 80px;
-            right: 260px;
-            font-size: 120px;
+            top: 20px;
+            right: 20px;
+            font-size: 50px; /* Adjust timer size */
             font-weight: bold;
             background-color: rgba(255, 0, 0, 0.7);
             padding: 5px 10px;
@@ -114,16 +117,74 @@ display: flex;
             pointer-events: none;
             opacity: 0.5;
         }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            #timer {
+                font-size: 30px; /* Smaller font size for mobile */
+                top: 10px;
+                right: 10px;
+            }
+
+            .image-container {
+                width: 90%; /* Fit the image within the screen */
+            }
+
+            .options button {
+                width: 90%; /* Full-width buttons for smaller screens */
+                font-size: 14px;
+            }
+
+            .controls button {
+                font-size: 14px;
+                width: 45%; /* Smaller buttons */
+            }
+
+            #submit-btn {
+                font-size: 14px;
+                padding: 8px 16px;
+                left: 10px;
+                bottom: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #timer {
+                font-size: 25px; /* Adjust for very small screens */
+            }
+
+            .image-container {
+                width: 100%; /* Full-width image */
+            }
+
+            .options button {
+                width: 100%; /* Full-width buttons */
+                font-size: 12px; /* Smaller font size */
+                padding: 8px 16px;
+            }
+
+            .controls button {
+                width: 45%;
+                font-size: 12px;
+            }
+
+            #submit-btn {
+                font-size: 12px;
+                padding: 6px 12px;
+                left: 10px;
+                bottom: 10px;
+            }
+        }
     </style>
 </head>
 <body>
     <div id="timer">Süre: 25</div>
- <button id="submit-btn" onclick="submitTest()">Testi Bitir</button>
+    <button id="submit-btn" onclick="submitTest()">Testi Bitir</button>
     <div class="container">
         <h1>X-Ray Görüntü Analizi</h1>
         <div class="content-wrapper">
             <div class="image-container" onclick="placeMarker(event)">
-                <img id="xray-image" src="images/resim-1.jpg" alt="X-Ray Görüntüsü">
+                <img id="xray-image" src="images/resim-1.png" alt="X-Ray Görüntüsü">
             </div>
             <h2 id="question-text">Soru 1: Görüntüde tehdit unsuru var mı?</h2>
             <div class="options" id="options-container">
@@ -135,7 +196,6 @@ display: flex;
         <div class="controls">
             <button onclick="prevQuestion()">Önceki</button>
             <button onclick="nextQuestion()">Sonraki</button>
-            
         </div>
     </div>
     <script>
@@ -144,16 +204,51 @@ display: flex;
         let timeLeft = 25;
         let timerInterval;
         const correctAnswers = {
-            1: 'kirli',
-            2: 'temiz',
-            3: 'tanimsiz'
+            1: 'TEMİZ',
+            2: 'KİRLİ',
+            3: 'KİRLİ',
+            4: 'KİRLİ',
+            5: 'KİRLİ',
+            6: 'KİRLİ',
+            7: 'TEMİZ',
+            8: 'TEMİZ',
+            9: 'KİRLİ',
+            10: 'TEMİZ',
+            11: 'TEMİZ',
+            12: 'KİRLİ',
+            13: 'KİRLİ',
+            14: 'KİRLİ',
+            15: 'TEMİZ',
+            16: 'TEMİZ',
+            17: 'TEMİZ',
+            18: 'KİRLİ',
+            19: 'KİRLİ',
+            20: 'KİRLİ',
         };
         const questionScores = {
-            1: 10,
+            1: 5,
             2: 5,
-            3: 8
+            3: 5,
+            4: 5,
+            5: 5,
+            6: 5,
+            7: 5,
+            8: 5,
+            9: 5,
+            10: 5,
+            11: 5,
+            12: 5,
+            13: 5,
+            14: 5,
+            15: 5,
+            16: 5,
+            17: 5,
+            18: 5,
+            19: 5,
+            20: 5,
         };
         let totalScore = 0;
+
         function startTimer() {
             clearInterval(timerInterval);
             timeLeft = 25;
@@ -167,16 +262,19 @@ display: flex;
                 }
             }, 1000);
         }
+
         function disableOptions() {
             document.querySelectorAll('.options button').forEach(button => {
                 button.classList.add('disabled');
             });
         }
+
         function enableOptions() {
             document.querySelectorAll('.options button').forEach(button => {
                 button.classList.remove('disabled');
             });
         }
+
         function selectOption(button, answer) {
             if (timeLeft > 0) {
                 document.querySelectorAll('.options button').forEach(btn => btn.classList.remove('selected'));
@@ -186,6 +284,7 @@ display: flex;
                 }
             }
         }
+
         function placeMarker(event) {
             if (timeLeft > 0) {
                 const container = document.querySelector('.image-container');
@@ -198,31 +297,33 @@ display: flex;
                 container.appendChild(marker);
             }
         }
+
         function updateQuestion() {
             document.getElementById('question-text').textContent = `Soru ${currentQuestion}: Görüntüde tehdit unsuru var mı?`;
-            document.getElementById('xray-image').src = `images/resim-${currentQuestion}.jpg`;
+            document.getElementById('xray-image').src = `images/resim-${currentQuestion}.png`;
             document.querySelectorAll('.options button').forEach(button => button.classList.remove('selected'));
-            document.querySelector('.marker')?.remove();
-            enableOptions();
-            startTimer();
         }
+
         function nextQuestion() {
             if (currentQuestion < totalQuestions) {
                 currentQuestion++;
                 updateQuestion();
             }
         }
+
         function prevQuestion() {
             if (currentQuestion > 1) {
                 currentQuestion--;
                 updateQuestion();
             }
         }
+
         function submitTest() {
-            alert(`Test tamamlandı! Toplam puanınız: ${totalScore}`);
+            clearInterval(timerInterval);
+            alert(`Test Tamamlandı! Toplam Puan: ${totalScore}`);
         }
+
         startTimer();
     </script>
 </body>
 </html>
-
