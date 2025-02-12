@@ -23,7 +23,7 @@
         }
         .content-wrapper {
             display: flex;
-            flex-direction: column;
+            flex-direction: column; /* Yatay düzen için bu kısmı değiştireceğiz */
             align-items: center;
             width: 80%;
             max-width: 800px;
@@ -58,8 +58,10 @@
         .options {
             margin-top: 20px;
             display: flex;
-            flex-direction: column; /* Stack buttons vertically on small screens */
-            align-items: center;
+            flex-direction: row; /* Yatay düzen için değiştirildi */
+            justify-content: center;
+            flex-wrap: wrap; /* Butonları düzgün şekilde sarmalar */
+            gap: 10px; /* Butonlar arasına boşluk eklendi */
         }
         .options button {
             padding: 10px 20px;
@@ -69,7 +71,8 @@
             background-color: #ffffff;
             border: 2px solid #ff8c00;
             border-radius: 5px;
-            width: 80%; /* Make buttons more responsive */
+            width: 30%; /* Yatayda butonların genişliği */
+            box-sizing: border-box;
         }
         #submit-btn {
             position: fixed;
@@ -107,7 +110,7 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            font-size: 50px; /* Adjust timer size */
+            font-size: 50px;
             font-weight: bold;
             background-color: rgba(255, 0, 0, 0.7);
             padding: 5px 10px;
@@ -121,23 +124,23 @@
         /* Mobile responsiveness */
         @media (max-width: 768px) {
             #timer {
-                font-size: 30px; /* Smaller font size for mobile */
+                font-size: 30px;
                 top: 10px;
                 right: 10px;
             }
 
             .image-container {
-                width: 90%; /* Fit the image within the screen */
+                width: 90%;
             }
 
             .options button {
-                width: 90%; /* Full-width buttons for smaller screens */
+                width: 45%; /* Butonlar küçük ekranlarda daha geniş olacak */
                 font-size: 14px;
             }
 
             .controls button {
                 font-size: 14px;
-                width: 45%; /* Smaller buttons */
+                width: 45%;
             }
 
             #submit-btn {
@@ -150,16 +153,16 @@
 
         @media (max-width: 480px) {
             #timer {
-                font-size: 25px; /* Adjust for very small screens */
+                font-size: 25px;
             }
 
             .image-container {
-                width: 100%; /* Full-width image */
+                width: 100%;
             }
 
             .options button {
-                width: 100%; /* Full-width buttons */
-                font-size: 12px; /* Smaller font size */
+                width: 100%; /* Butonlar tam genişlikte olacak */
+                font-size: 12px;
                 padding: 8px 16px;
             }
 
