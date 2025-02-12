@@ -13,19 +13,24 @@
             background-repeat: no-repeat;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         .container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            height: 100vh;
             justify-content: center;
+            flex-grow: 1;
+            padding: 20px;
+            box-sizing: border-box;
         }
         .content-wrapper {
             display: flex;
-            flex-direction: column; /* Yatay düzen için bu kısmı değiştireceğiz */
+            flex-direction: column;
             align-items: center;
-            width: 80%;
+            width: 95%;
             max-width: 800px;
             margin-top: 20px;
         }
@@ -37,6 +42,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
         }
         .image-container img {
             max-width: 100%;
@@ -53,33 +60,35 @@
         }
         #question-text {
             text-align: center;
-            margin-top: 150px;
+            margin-top: 20px;
+            font-size: 1.2em;
         }
         .options {
             margin-top: 20px;
             display: flex;
-            flex-direction: row; /* Yatay düzen için değiştirildi */
-            justify-content: center;
-            flex-wrap: wrap; /* Butonları düzgün şekilde sarmalar */
-            gap: 10px; /* Butonlar arasına boşluk eklendi */
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            gap: 10px;
         }
         .options button {
             padding: 10px 20px;
-            margin: 5px;
-            font-size: 16px;
+            font-size: 1em;
             cursor: pointer;
             background-color: #ffffff;
             border: 2px solid #ff8c00;
             border-radius: 5px;
-            width: 30%; /* Yatayda butonların genişliği */
+            width: 100%;
             box-sizing: border-box;
+            margin: 5px 0;
         }
         #submit-btn {
             position: fixed;
-            left: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             bottom: 20px;
             padding: 10px 20px;
-            font-size: 16px;
+            font-size: 1em;
             cursor: pointer;
             background-color: #28a745;
             color: white;
@@ -94,23 +103,25 @@
         .controls {
             margin-top: 20px;
             display: flex;
-            gap: 10px;
+            justify-content: space-around;
+            width: 100%;
         }
         .controls button {
             padding: 10px;
-            font-size: 16px;
-            margin: 5px;
+            font-size: 1em;
             cursor: pointer;
             border: none;
             background-color: #28a745;
             color: white;
             border-radius: 5px;
+            width: 45%;
+            box-sizing: border-box;
         }
         #timer {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 50px;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
             font-weight: bold;
             background-color: rgba(255, 0, 0, 0.7);
             padding: 5px 10px;
@@ -119,64 +130,6 @@
         .disabled {
             pointer-events: none;
             opacity: 0.5;
-        }
-
-        /* Mobile responsiveness */
-        @media (max-width: 768px) {
-            #timer {
-                font-size: 30px;
-                top: 10px;
-                right: 10px;
-            }
-
-            .image-container {
-                width: 90%;
-            }
-
-            .options button {
-                width: 45%; /* Butonlar küçük ekranlarda daha geniş olacak */
-                font-size: 14px;
-            }
-
-            .controls button {
-                font-size: 14px;
-                width: 45%;
-            }
-
-            #submit-btn {
-                font-size: 14px;
-                padding: 8px 16px;
-                left: 10px;
-                bottom: 10px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            #timer {
-                font-size: 25px;
-            }
-
-            .image-container {
-                width: 100%;
-            }
-
-            .options button {
-                width: 100%; /* Butonlar tam genişlikte olacak */
-                font-size: 12px;
-                padding: 8px 16px;
-            }
-
-            .controls button {
-                width: 45%;
-                font-size: 12px;
-            }
-
-            #submit-btn {
-                font-size: 12px;
-                padding: 6px 12px;
-                left: 10px;
-                bottom: 10px;
-            }
         }
     </style>
 </head>
